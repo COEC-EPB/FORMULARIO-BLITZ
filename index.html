@@ -35,10 +35,11 @@
     }
 
     .header{
-        background:linear-gradient(
-            90deg,
+    background:
+        linear-gradient(
+            135deg,
             var(--energisa-blue),
-            var(--energisa-green)
+            var(--energisa-blue-dark)
         );
         color:white;
         padding:20px 30px;
@@ -151,11 +152,11 @@
     }
 
     input[type=radio]{
-        width:18px;
-        height:18px;
-        accent-color:var(--energisa-green);
-        cursor:pointer;
-    }
+    width:22px;
+    height:22px;
+    accent-color:var(--energisa-green);
+    transform:scale(1.1);
+}
 
     .naoConformeBox{
         display:none;
@@ -191,7 +192,7 @@
     }
 
     button{
-        background:var(--energisa-green);
+        background:var(--energisa-blue);
         color:white;
         border:none;
         border-radius:10px;
@@ -203,6 +204,7 @@
     }
 
     button:hover{
+        background:var(--energisa-blue-dark);
         background:#006B31;
         transform:translateY(-2px);
         box-shadow:0 4px 12px rgba(0,0,0,.15);
@@ -239,7 +241,19 @@
         button{
             width:100%;
         }
-    }
+    }thead{
+    position:sticky;
+    top:0;
+    z-index:10;
+}
+
+table{
+    min-width:800px;
+}
+
+.table-container{
+    overflow:auto;
+}
 </style>
 </head>
 
@@ -254,11 +268,10 @@
 
 <div class="card">
 
-<h2>Inspeção de Campo</h2>
-
  <div class="card-title">
         Dados da Inspeção
     </div>
+    <div class="card-body">
 <input type="date">
 
 <label>RESPONSÁVEL 01 PELA AÇÃO</label>
@@ -296,8 +309,10 @@
     <h2>Dados do Veículo</h2>
 
     <label>Placa do Veículo</label>
-    <input type="text" id="placaVeiculo"
-           placeholder="ABC1D23">
+    <input type="text"
+       id="placaVeiculo"
+       maxlength="7"
+       placeholder="ABC1D23">
 
     <label>Tipo do Veículo</label>
 
@@ -381,7 +396,7 @@
         Salvar Inspeção
     </button>
 </div>
-
+</div>
 <script>
 
 const itens = [
@@ -545,10 +560,12 @@ itens.forEach((item, i)=>{
             Observação:
 
             <textarea
-                placeholder="Descreva a não conformidade..."
-            ></textarea>
+    placeholder="Descreva a não conformidade..."
+></textarea>
 
-        </td>
+</div>
+
+</td>
 
     </tr>
     `;
@@ -556,8 +573,17 @@ itens.forEach((item, i)=>{
 
 function mostrarNC(indice){
 
-    document.getElementById("nc"+indice)
-            .style.display = "table-row";
+    const linha =
+        document.getElementById("nc"+indice);
+
+    linha.style.display = "table-row";
+
+}function ocultarNC(indice){
+
+    document.getElementById(
+        "nc"+indice
+    ).style.display = "none";
+
 }
     function mostrarNCVeiculo(tipo,i){
 
