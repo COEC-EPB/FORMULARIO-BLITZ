@@ -433,6 +433,16 @@
         padding:10px 8px;
     }
 }
+.grupo-linha td{
+    background:#eaf6fb !important;
+    color:#005b7f;
+    font-weight:bold;
+    text-align:left !important;
+    font-size:15px;
+    padding:14px 12px;
+    border-top:2px solid #cfeaf5;
+}
+
 </style>
 </head>
 
@@ -567,9 +577,11 @@
 </div>
 
    <div class="card hidden" id="secaoEPC">
-    <div class="card-title">
-        EQUIPAMENTOS DE PROTEÇÃO COLETIVA - EPC
-    </div>
+    
+<div class="card-title">
+    EPI / EPC
+</div>
+
 
     <div class="card-body">
         <div id="listaItens" class="checklist-mobile"></div>
@@ -591,7 +603,26 @@
 <script>
 const API = "https://forms.pedro-fillype.workers.dev";
 
-const itens = [
+const itensEPI = [
+    'Botina Impermeável (1)',
+    'Capa de Chuva (1)',
+    'Capacete Aba Total (1)',
+    'Cinturão de Segurança (1)',
+    'Talabarte (1)',
+    'Trava Quedas (1)',
+    'Luva de Cobertura (2)',
+    'Luva Isolante Classe 0 (1)',
+    'Luva Isolante Classe II (1)',
+    'Luva de Vaqueta (1)',
+    'Balaclava (2)',
+    'Uniforme Anti Chamas (1)',
+    'Óculos de Segurança (2)',
+    'Perneira (1)',
+    'Botina (1)',
+    'Manga Isolante (1)'
+];
+
+const itensEPC = [
     'Bastão "Pega Tudo"',
     'Bastão Podador',
     'Vara de Manobra',
@@ -609,6 +640,7 @@ const itens = [
     'Placa de Sinalização',
     'Fita de Transposição'
 ];
+
 
 const veiculos = {
     simples: [
@@ -785,11 +817,27 @@ function montarLinhaChecklist(nomeGrupo, item, indice, idNC, categoria){
     `;
 }
 
+function adicionarTituloGrupo(titulo) {
+    listaItens.innerHTML += `
+        <tr class="grupo-linha">
+            <td colspan="5">${titulo}</td>
+        </tr>
+    `;
+}
+
 function carregarChecklistEPC(){
     listaItens.innerHTML = "";
 
-    itens.forEach((item, i) => {
-        listaItens.innerHTML += montarLinhaChecklist(`item${i}`, item, i, `nc${i}`, "EPC");
+    // ===== EPI =====
+    adicionarTituloGrupo("EPI");
+    itensEPI.forEach((item, i) => {
+        listaItens.innerHTML += montarLinhaChecklist(`epi${i}`, item, i, `nc_epi_${i}`, "EPI");
+    });
+
+    // ===== EPC =====
+    adicionarTituloGrupo("EPC");
+    itensEPC.forEach((item, i) => {
+        listaItens.innerHTML += montarLinhaChecklist(`epc${i}`, item, i, `nc_epc_${i}`, "EPC");
     });
 }
 
