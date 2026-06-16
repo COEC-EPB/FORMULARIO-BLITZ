@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Inspeção de Campo</title>
+
+<style>
+    body{
+        font-family: Arial;
+        background:#f5f5f5;
+        margin:20px;
+    }
+
+    .card{
+        background:white;
+        padding:20px;
+        border-radius:10px;
+        margin-bottom:20px;
+        box-shadow:0 0 10px rgba(0,0,0,.1);
+    }
+
+    h2{
+        color:#0097CE;
+    }
+
+    table{
+        width:100%;
+        border-collapse:collapse;
+    }
+
+    th{
+        background:#f0f0f0;
+        padding:12px;
+    }
+
+    td{
+        padding:10px;
+        text-align:center;
+        border-bottom:1px solid #ddd;
+    }
+
+    td:first-child{
+        text-align:left;
+    }
+
+    input[type=text],
+    input[type=date]{
+        width:100%;
+        padding:10px;
+        margin-top:5px;
+        margin-bottom:15px;
+        box-sizing:border-box;
+    }
+
+    textarea{
+        width:100%;
+        height:80px;
+        padding:10px;
+    }
+
+    .naoConformeBox{
+        display:none;
+        margin-top:10px;
+        background:#fff4f4;
+        padding:15px;
+        border-left:5px solid red;
+    }
+
+    .hidden{
+        display:none;
+    }
+
+    button{
+        background:#0097CE;
+        color:white;
+        border:none;
+        padding:12px 25px;
+        border-radius:5px;
+        cursor:pointer;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+<h2>Inspeção de Campo</h2>
+
+<label>Data da Inspeção</label>
+<input type="date">
+
+<label>RESPONSÁVEL 01 PELA AÇÃO</label>
+<input type="text">
+
+<label>MATRÍCULA RESPONSÁVEL 01</label>
+<input type="text">
+
+<label>RESPONSÁVEL 02 PELA AÇÃO</label>
+<input type="text">
+
+<label>MATRÍCULA RESPONSÁVEL 02</label>
+<input type="text">
+
+</div>
+
+<div class="card">
+
+<h2>Tipo de Inspeção</h2>
+
+<label>
+    <input type="radio" name="tipo" value="epi">
+    EPI / EPC
+</label>
+
+<br><br>
+
+<label>
+    <input type="radio" name="tipo" value="viatura">
+    Viatura
+</label>
+
+</div>
+
+<div class="card hidden" id="secaoEPC">
+
+<h2>EQUIPAMENTOS DE PROTEÇÃO COLETIVA - EPC</h2>
+
+<table>
+
+<thead>
+<tr>
+    <th>Item</th>
+    <th>Conforme</th>
+    <th>Não Conforme</th>
+    <th>Falta</th>
+    <th>Não se Aplica</th>
+</tr>
+</thead>
+
+<tbody id="listaItens"></tbody>
+
+</table>
+
+</div>
+
+<br>
+
+<button>Salvar Inspeção</button>
+
+<script>
+
+const itens = [
+'Bastão "Pega Tudo"',
+'Bastão Podador',
+'Vara de Manobra',
+'Bay-pass 13,8 kV',
+'Dispositivo Anti Queda',
+'Cone de Sinalização',
+'Aterramento BT',
+'Aterramento MT',
+'Detector de Tensão BT',
+'Detector de Tensão MT',
+'Dinamômetro',
+'Escada Extensível',
+'Escada Singela',
+'Manta Isolante',
+'Placa de Sinalização',
+'Fita de Transposição'
+];
+
+const tbody = document.getElementById("listaItens");
+
+itens.forEach((item, i)=>{
+
+    tbody.innerHTML += `
+    <tr>
+
+        <td>${i+1} - ${item}</td>
+
+        <td>
+            <input type="radio" name="item${i}" value="Conforme">
+        </td>
+
+        <td>
+            <input type="radio"
+                   name="item${i}"
+                   value="Não Conforme"
+                   onchange="mostrarNC(${i})">
+        </td>
+
+        <td>
+            <input type="radio" name="item${i}" value="Falta">
+        </td>
+
+        <td>
+            <input type="radio" name="item${i}" value="NA">
+        </td>
+
+    </tr>
+
+    <tr id="nc${i}" class="naoConformeBox">
+
+        <td colspan="5">
+
+            <strong>Registro da Não Conformidade</strong>
+
+            <br><br>
+
+            Foto da não conformidade:
+
+            <br><br>
+
+            <input type="file"
+                   accept="image/*"
+                   capture="environment">
+
+            <br><br>
+
+            Observação:
+
+            <textarea
+                placeholder="Descreva a não conformidade..."
+            ></textarea>
+
+        </td>
+
+    </tr>
+    `;
+});
+
+function mostrarNC(indice){
+
+    document.getElementById("nc"+indice)
+            .style.display = "table-row";
+}
+
+document.querySelectorAll('input[name="tipo"]')
+.forEach(radio => {
+
+    radio.addEventListener("change", ()=>{
+
+        if(radio.value === "epi" && radio.checked){
+
+            document.getElementById("secaoEPC")
+                    .classList.remove("hidden");
+
+        }else if(radio.value === "viatura" && radio.checked){
+
+            document.getElementById("secaoEPC")
+                    .classList.add("hidden");
+        }
+
+    });
+
+});
+
+</script>
+
+</body>
+</html>
