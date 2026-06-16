@@ -14,7 +14,6 @@
         --border:#D9E0E6;
         --text:#333;
         --danger:#D32F2F;
-        --white:#fff;
     }
 
     *{
@@ -79,19 +78,11 @@
         gap:16px;
     }
 
-    .full{
-        grid-column:1 / -1;
-    }
-
     label{
         display:block;
         font-weight:600;
+        margin-top:15px;
         margin-bottom:6px;
-    }
-
-    .field{
-        display:flex;
-        flex-direction:column;
     }
 
     input[type=text],
@@ -115,7 +106,7 @@
 
     .radio-group{
         display:flex;
-        gap:30px;
+        gap:40px;
         flex-wrap:wrap;
         margin-top:10px;
     }
@@ -177,7 +168,7 @@
         width:22px;
         height:22px;
         accent-color:var(--energisa-green);
-        transform:scale(1.05);
+        transform:scale(1.1);
         cursor:pointer;
     }
 
@@ -233,6 +224,13 @@
         box-shadow:0 4px 12px rgba(0,0,0,.15);
     }
 
+    button:disabled{
+        opacity:.7;
+        cursor:not-allowed;
+        transform:none;
+        box-shadow:none;
+    }
+
     .required{
         color:red;
     }
@@ -240,7 +238,36 @@
     h2{
         margin:0 0 16px 0;
         font-size:20px;
-        color:#1f2937;
+    }
+
+    .status{
+        display:none;
+        margin-top:16px;
+        padding:12px 14px;
+        border-radius:10px;
+        font-size:14px;
+        font-weight:bold;
+    }
+
+    .status.ok{
+        display:block;
+        background:#ecfdf5;
+        color:#166534;
+        border:1px solid #bbf7d0;
+    }
+
+    .status.erro{
+        display:block;
+        background:#fef2f2;
+        color:#991b1b;
+        border:1px solid #fecaca;
+    }
+
+    .status.info{
+        display:block;
+        background:#eef6fb;
+        color:#0f4c5c;
+        border:1px solid rgba(0,151,206,.18);
     }
 
     @media(max-width:768px){
@@ -266,8 +293,8 @@
         }
 
         th, td{
-            padding:10px 8px;
-            font-size:13px;
+            padding:8px;
+            font-size:12px;
         }
     }
 </style>
@@ -284,31 +311,34 @@
 
     <!-- DADOS DA INSPEÇÃO -->
     <div class="card">
-        <div class="card-title">Dados da Inspeção</div>
+        <div class="card-title">
+            Dados da Inspeção
+        </div>
+
         <div class="card-body">
             <div class="grid">
-                <div class="field">
+                <div>
                     <label for="dataInspecao">Data da Inspeção <span class="required">*</span></label>
                     <input type="date" id="dataInspecao">
                 </div>
 
-                <div class="field">
-                    <label for="resp1">Responsável 01 pela ação <span class="required">*</span></label>
+                <div>
+                    <label for="resp1">RESPONSÁVEL 01 PELA AÇÃO <span class="required">*</span></label>
                     <input type="text" id="resp1">
                 </div>
 
-                <div class="field">
-                    <label for="mat1">Matrícula Responsável 01 <span class="required">*</span></label>
+                <div>
+                    <label for="mat1">MATRÍCULA RESPONSÁVEL 01 <span class="required">*</span></label>
                     <input type="text" id="mat1">
                 </div>
 
-                <div class="field">
-                    <label for="resp2">Responsável 02 pela ação</label>
+                <div>
+                    <label for="resp2">RESPONSÁVEL 02 PELA AÇÃO</label>
                     <input type="text" id="resp2">
                 </div>
 
-                <div class="field">
-                    <label for="mat2">Matrícula Responsável 02</label>
+                <div>
+                    <label for="mat2">MATRÍCULA RESPONSÁVEL 02</label>
                     <input type="text" id="mat2">
                 </div>
             </div>
@@ -317,7 +347,10 @@
 
     <!-- TIPO DE INSPEÇÃO -->
     <div class="card">
-        <div class="card-title">Tipo de Inspeção</div>
+        <div class="card-title">
+            Tipo de Inspeção
+        </div>
+
         <div class="card-body">
             <div class="radio-group">
                 <label>
@@ -335,10 +368,13 @@
 
     <!-- DADOS DO VEÍCULO -->
     <div class="card hidden" id="secaoVeiculo">
-        <div class="card-title">Dados do Veículo</div>
+        <div class="card-title">
+            Dados do Veículo
+        </div>
+
         <div class="card-body">
             <div class="grid">
-                <div class="field">
+                <div>
                     <label for="placaVeiculo">Placa do Veículo</label>
                     <input
                         type="text"
@@ -348,8 +384,9 @@
                     >
                 </div>
 
-                <div class="field">
+                <div>
                     <label for="tipoVeiculo">Tipo do Veículo</label>
+
                     <select id="tipoVeiculo">
                         <option value="">Selecione...</option>
                         <option value="simples">Caminhonete Simples</option>
@@ -364,7 +401,10 @@
 
     <!-- CHECKLIST VEÍCULO -->
     <div class="card hidden" id="checklistVeiculo">
-        <div class="card-title" id="tituloVeiculo">Checklist do Veículo</div>
+        <div class="card-title" id="tituloVeiculo">
+            Checklist do Veículo
+        </div>
+
         <div class="card-body">
             <div class="table-container">
                 <table>
@@ -377,6 +417,7 @@
                             <th>Não se Aplica</th>
                         </tr>
                     </thead>
+
                     <tbody id="listaVeiculo"></tbody>
                 </table>
             </div>
@@ -385,7 +426,10 @@
 
     <!-- CHECKLIST EPC -->
     <div class="card hidden" id="secaoEPC">
-        <div class="card-title">Equipamentos de Proteção Coletiva - EPC</div>
+        <div class="card-title">
+            EQUIPAMENTOS DE PROTEÇÃO COLETIVA - EPC
+        </div>
+
         <div class="card-body">
             <div class="table-container">
                 <table>
@@ -398,4 +442,368 @@
                             <th>Não se Aplica</th>
                         </tr>
                     </thead>
+
                     <tbody id="listaItens"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="btn-container">
+        <button type="button" id="btnSalvar">
+            Salvar Inspeção
+        </button>
+
+        <div id="status" class="status"></div>
+    </div>
+
+</div>
+
+<script>
+const API = "https://ensai-dieletrico.pedro-fillype.workers.dev";
+
+const itens = [
+    'Bastão "Pega Tudo"',
+    'Bastão Podador',
+    'Vara de Manobra',
+    'Bay-pass 13,8 kV',
+    'Dispositivo Anti Queda',
+    'Cone de Sinalização',
+    'Aterramento BT',
+    'Aterramento MT',
+    'Detector de Tensão BT',
+    'Detector de Tensão MT',
+    'Dinamômetro',
+    'Escada Extensível',
+    'Escada Singela',
+    'Manta Isolante',
+    'Placa de Sinalização',
+    'Fita de Transposição'
+];
+
+const veiculos = {
+    simples: [
+        'Buzina',
+        'Chave de Roda',
+        'Luz de Ré',
+        'Luz de Freio',
+        'Setas',
+        'Farol',
+        'Pneu de Estepe',
+        'Freio de Mão',
+        'Limpador de Para-brisa',
+        'Esguicho',
+        'Macaco',
+        'Pneus',
+        'Retrovisores',
+        'Triângulo de Sinalização',
+        'Rádio VHF',
+        'Calços p/ Pneus'
+    ],
+
+    escada: [
+        'Buzina',
+        'Luz de Ré',
+        'Luz de Freio',
+        'Setas',
+        'Farol',
+        'Pneu de Estepe',
+        'Freio de Mão',
+        'Limpador de Para-brisa',
+        'Esguicho',
+        'Macaco',
+        'Pneus',
+        'Retrovisores',
+        'Triângulo de Sinalização',
+        'Rádio VHF',
+        'Condições da Escada Central',
+        'Mangueiras da Escada',
+        'Calços p/ Pneus',
+        'Calços p/ Patolas',
+        'Patolas'
+    ],
+
+    cesto: [
+        'Buzina',
+        'Luz de Ré',
+        'Luz de Freio',
+        'Setas',
+        'Farol',
+        'Pneu de Estepe',
+        'Freio de Mão',
+        'Limpador de Para-brisa',
+        'Esguicho',
+        'Macaco',
+        'Pneus',
+        'Retrovisores',
+        'Triângulo de Sinalização',
+        'Rádio VHF',
+        'Condições do Cesto',
+        'Mangueiras do Cesto',
+        'Lança do Cesto',
+        'Calços p/ Pneus',
+        'Calços p/ Patolas',
+        'Patolas'
+    ],
+
+    passeio: [
+        'Buzina',
+        'Luz de Ré',
+        'Luz de Freio',
+        'Setas',
+        'Farol',
+        'Freio de Mão',
+        'Limpador de Para-brisa',
+        'Esguicho',
+        'Pneus',
+        'Retrovisores',
+        'Triângulo de Sinalização'
+    ]
+};
+
+const secaoEPC = document.getElementById("secaoEPC");
+const secaoVeiculo = document.getElementById("secaoVeiculo");
+const checklistVeiculo = document.getElementById("checklistVeiculo");
+const tipoVeiculo = document.getElementById("tipoVeiculo");
+const tituloVeiculo = document.getElementById("tituloVeiculo");
+const listaVeiculo = document.getElementById("listaVeiculo");
+const listaItens = document.getElementById("listaItens");
+const placaVeiculo = document.getElementById("placaVeiculo");
+const btnSalvar = document.getElementById("btnSalvar");
+const statusEl = document.getElementById("status");
+
+function setStatus(msg, tipo = "info"){
+    statusEl.textContent = msg;
+    statusEl.className = "status " + tipo;
+}
+
+function toggleNC(idLinha, valor){
+    const linha = document.getElementById(idLinha);
+    if (!linha) return;
+    linha.style.display = valor === "Não Conforme" ? "table-row" : "none";
+}
+
+function montarLinhaChecklist(nomeGrupo, item, indice, idNC, categoria){
+    return `
+        <tr data-grupo="${nomeGrupo}" data-item="${item}" data-categoria="${categoria}">
+            <td>${indice + 1} - ${item}</td>
+
+            <td>
+                <input type="radio" name="${nomeGrupo}" value="Conforme" onchange="toggleNC('${idNC}', this.value)">
+            </td>
+
+            <td>
+                <input type="radio" name="${nomeGrupo}" value="Não Conforme" onchange="toggleNC('${idNC}', this.value)">
+            </td>
+
+            <td>
+                <input type="radio" name="${nomeGrupo}" value="Falta" onchange="toggleNC('${idNC}', this.value)">
+            </td>
+
+            <td>
+                <input type="radio" name="${nomeGrupo}" value="NA" onchange="toggleNC('${idNC}', this.value)">
+            </td>
+        </tr>
+
+        <tr id="${idNC}" class="naoConformeBox">
+            <td colspan="5">
+                <div class="naoConformeContent">
+                    <strong>Registro da Não Conformidade</strong>
+
+                    <br><br>
+
+                    Foto da não conformidade:
+
+                    <br><br>
+
+                    <input type="file" class="fotoNC" accept="image/*" capture="environment">
+
+                    <br><br>
+
+                    Observação:
+
+                    <textarea class="obsNC" placeholder="Descreva a não conformidade..."></textarea>
+                </div>
+            </td>
+        </tr>
+    `;
+}
+
+function carregarChecklistEPC(){
+    listaItens.innerHTML = "";
+
+    itens.forEach((item, i) => {
+        listaItens.innerHTML += montarLinhaChecklist(`item${i}`, item, i, `nc${i}`, "EPC");
+    });
+}
+
+function carregarChecklistVeiculo(tipo){
+    listaVeiculo.innerHTML = "";
+
+    if (!veiculos[tipo]) return;
+
+    veiculos[tipo].forEach((item, i) => {
+        listaVeiculo.innerHTML += montarLinhaChecklist(`v${tipo}${i}`, item, i, `ncv${tipo}${i}`, "VEICULO");
+    });
+}
+
+function getTipoInspecaoSelecionado() {
+    const selecionado = document.querySelector('input[name="tipo"]:checked');
+    return selecionado ? selecionado.value : "";
+}
+
+function coletarChecklistDoTbody(tbody) {
+    const registros = [];
+    const linhasPrincipais = tbody.querySelectorAll("tr[data-grupo]");
+
+    linhasPrincipais.forEach((tr) => {
+        const grupo = tr.dataset.grupo;
+        const item = tr.dataset.item;
+        const categoria = tr.dataset.categoria;
+
+        const selecionado = tr.querySelector(`input[name="${grupo}"]:checked`);
+        const status = selecionado ? selecionado.value : "";
+
+        const linhaNC = tr.nextElementSibling;
+        let observacao = "";
+        let foto_nome = "";
+
+        if (linhaNC) {
+            const obs = linhaNC.querySelector(".obsNC");
+            const foto = linhaNC.querySelector(".fotoNC");
+
+            observacao = obs ? obs.value.trim() : "";
+            foto_nome = (foto && foto.files && foto.files[0]) ? foto.files[0].name : "";
+        }
+
+        registros.push({
+            categoria,
+            grupo,
+            item,
+            status,
+            observacao,
+            foto_nome
+        });
+    });
+
+    return registros;
+}
+
+function validarFormulario(payload) {
+    if (!payload.data_inspecao) return "Informe a data da inspeção.";
+    if (!payload.responsavel_1) return "Informe o Responsável 01.";
+    if (!payload.matricula_1) return "Informe a matrícula do Responsável 01.";
+    if (!payload.tipo_inspecao) return "Selecione o tipo de inspeção.";
+
+    if (payload.tipo_inspecao === "viatura" && !payload.tipo_veiculo) {
+        return "Selecione o tipo do veículo.";
+    }
+
+    return "";
+}
+
+async function salvarInspecao() {
+    btnSalvar.disabled = true;
+    setStatus("Salvando inspeção...", "info");
+
+    try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            setStatus("Sessão não encontrada. Faça login antes de salvar.", "erro");
+            return;
+        }
+
+        const tipo_inspecao = getTipoInspecaoSelecionado();
+
+        let checklist = [];
+        if (tipo_inspecao === "epi") {
+            checklist = coletarChecklistDoTbody(listaItens);
+        } else if (tipo_inspecao === "viatura") {
+            checklist = coletarChecklistDoTbody(listaVeiculo);
+        }
+
+        const payload = {
+            data_inspecao: document.getElementById("dataInspecao").value,
+            responsavel_1: document.getElementById("resp1").value.trim(),
+            matricula_1: document.getElementById("mat1").value.trim(),
+            responsavel_2: document.getElementById("resp2").value.trim(),
+            matricula_2: document.getElementById("mat2").value.trim(),
+            tipo_inspecao,
+            placa_veiculo: document.getElementById("placaVeiculo").value.trim(),
+            tipo_veiculo: document.getElementById("tipoVeiculo").value,
+            checklist
+        };
+
+        const erroValidacao = validarFormulario(payload);
+        if (erroValidacao) {
+            setStatus(erroValidacao, "erro");
+            return;
+        }
+
+        const r = await fetch(`${API}/salvar-form-inspecao`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token
+            },
+            body: JSON.stringify(payload)
+        });
+
+        const j = await r.json().catch(() => ({}));
+
+        if (!r.ok) {
+            setStatus(j.error || "Erro ao salvar inspeção.", "erro");
+            return;
+        }
+
+        setStatus(j.message || "Inspeção salva com sucesso!", "ok");
+    } catch (err) {
+        console.error(err);
+        setStatus("Falha ao conectar ao servidor.", "erro");
+    } finally {
+        btnSalvar.disabled = false;
+    }
+}
+
+document.querySelectorAll('input[name="tipo"]').forEach(radio => {
+    radio.addEventListener("change", () => {
+        if (radio.value === "epi" && radio.checked) {
+            secaoEPC.classList.remove("hidden");
+            secaoVeiculo.classList.add("hidden");
+            checklistVeiculo.classList.add("hidden");
+            tipoVeiculo.value = "";
+            listaVeiculo.innerHTML = "";
+        }
+
+        if (radio.value === "viatura" && radio.checked) {
+            secaoVeiculo.classList.remove("hidden");
+            secaoEPC.classList.add("hidden");
+        }
+    });
+});
+
+tipoVeiculo.addEventListener("change", () => {
+    const tipo = tipoVeiculo.value;
+
+    if (!tipo) {
+        checklistVeiculo.classList.add("hidden");
+        listaVeiculo.innerHTML = "";
+        return;
+    }
+
+    checklistVeiculo.classList.remove("hidden");
+    tituloVeiculo.textContent = tipoVeiculo.options[tipoVeiculo.selectedIndex].text;
+    carregarChecklistVeiculo(tipo);
+});
+
+placaVeiculo.addEventListener("input", () => {
+    placaVeiculo.value = placaVeiculo.value.replace(/\s+/g, "").toUpperCase();
+});
+
+btnSalvar.addEventListener("click", salvarInspecao);
+
+carregarChecklistEPC();
+</script>
+
+</body>
+</html>
