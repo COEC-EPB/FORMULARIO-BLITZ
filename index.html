@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Inspeção de Campo</title>
 
 <style>
@@ -15,6 +14,7 @@
         --border:#D9E0E6;
         --text:#333;
         --danger:#D32F2F;
+        --white:#fff;
     }
 
     *{
@@ -35,12 +35,7 @@
     }
 
     .header{
-    background:
-        linear-gradient(
-            135deg,
-            var(--energisa-blue),
-            var(--energisa-blue-dark)
-        );
+        background: linear-gradient(135deg, var(--energisa-blue), var(--energisa-blue-dark));
         color:white;
         padding:20px 30px;
         border-radius:12px;
@@ -78,11 +73,25 @@
         padding:20px;
     }
 
+    .grid{
+        display:grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap:16px;
+    }
+
+    .full{
+        grid-column:1 / -1;
+    }
+
     label{
         display:block;
         font-weight:600;
-        margin-top:15px;
         margin-bottom:6px;
+    }
+
+    .field{
+        display:flex;
+        flex-direction:column;
     }
 
     input[type=text],
@@ -106,7 +115,7 @@
 
     .radio-group{
         display:flex;
-        gap:40px;
+        gap:30px;
         flex-wrap:wrap;
         margin-top:10px;
     }
@@ -120,9 +129,21 @@
         margin:0;
     }
 
+    .table-container{
+        overflow:auto;
+        width:100%;
+    }
+
     table{
         width:100%;
         border-collapse:collapse;
+        min-width:800px;
+    }
+
+    thead{
+        position:sticky;
+        top:0;
+        z-index:10;
     }
 
     th{
@@ -137,6 +158,7 @@
         padding:12px;
         border-bottom:1px solid #eee;
         text-align:center;
+        vertical-align:middle;
     }
 
     td:first-child{
@@ -152,11 +174,12 @@
     }
 
     input[type=radio]{
-    width:22px;
-    height:22px;
-    accent-color:var(--energisa-green);
-    transform:scale(1.1);
-}
+        width:22px;
+        height:22px;
+        accent-color:var(--energisa-green);
+        transform:scale(1.05);
+        cursor:pointer;
+    }
 
     .naoConformeBox{
         display:none;
@@ -180,6 +203,7 @@
     textarea{
         min-height:90px;
         margin-top:10px;
+        resize:vertical;
     }
 
     .hidden{
@@ -205,7 +229,6 @@
 
     button:hover{
         background:var(--energisa-blue-dark);
-        background:#006B31;
         transform:translateY(-2px);
         box-shadow:0 4px 12px rgba(0,0,0,.15);
     }
@@ -214,8 +237,13 @@
         color:red;
     }
 
-    @media(max-width:768px){
+    h2{
+        margin:0 0 16px 0;
+        font-size:20px;
+        color:#1f2937;
+    }
 
+    @media(max-width:768px){
         body{
             padding:10px;
         }
@@ -224,13 +252,8 @@
             font-size:22px;
         }
 
-        table{
-            font-size:12px;
-        }
-
-        th,
-        td{
-            padding:8px;
+        .grid{
+            grid-template-columns:1fr;
         }
 
         .radio-group{
@@ -241,19 +264,12 @@
         button{
             width:100%;
         }
-    }thead{
-    position:sticky;
-    top:0;
-    z-index:10;
-}
 
-table{
-    min-width:800px;
-}
-
-.table-container{
-    overflow:auto;
-}
+        th, td{
+            padding:10px 8px;
+            font-size:13px;
+        }
+    }
 </style>
 </head>
 
@@ -266,447 +282,120 @@ table{
         <span>Checklist Operacional • Segurança • Veículos • EPI/EPC</span>
     </div>
 
-<div class="card">
+    <!-- DADOS DA INSPEÇÃO -->
+    <div class="card">
+        <div class="card-title">Dados da Inspeção</div>
+        <div class="card-body">
+            <div class="grid">
+                <div class="field">
+                    <label for="dataInspecao">Data da Inspeção <span class="required">*</span></label>
+                    <input type="date" id="dataInspecao">
+                </div>
 
- <div class="card-title">
-        Dados da Inspeção
+                <div class="field">
+                    <label for="resp1">Responsável 01 pela ação <span class="required">*</span></label>
+                    <input type="text" id="resp1">
+                </div>
+
+                <div class="field">
+                    <label for="mat1">Matrícula Responsável 01 <span class="required">*</span></label>
+                    <input type="text" id="mat1">
+                </div>
+
+                <div class="field">
+                    <label for="resp2">Responsável 02 pela ação</label>
+                    <input type="text" id="resp2">
+                </div>
+
+                <div class="field">
+                    <label for="mat2">Matrícula Responsável 02</label>
+                    <input type="text" id="mat2">
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="card-body">
-<input type="date">
 
-<label>RESPONSÁVEL 01 PELA AÇÃO</label>
-<input type="text">
+    <!-- TIPO DE INSPEÇÃO -->
+    <div class="card">
+        <div class="card-title">Tipo de Inspeção</div>
+        <div class="card-body">
+            <div class="radio-group">
+                <label>
+                    <input type="radio" name="tipo" value="epi">
+                    EPI / EPC
+                </label>
 
-<label>MATRÍCULA RESPONSÁVEL 01</label>
-<input type="text">
+                <label>
+                    <input type="radio" name="tipo" value="viatura">
+                    Viatura
+                </label>
+            </div>
+        </div>
+    </div>
 
-<label>RESPONSÁVEL 02 PELA AÇÃO</label>
-<input type="text">
-
-<label>MATRÍCULA RESPONSÁVEL 02</label>
-<input type="text">
-
-</div>
-
-<div class="card">
-
-<h2>Tipo de Inspeção</h2>
-
-<label>
-    <input type="radio" name="tipo" value="epi">
-    EPI / EPC
-</label>
-
-<br><br>
-
-<label>
-    <input type="radio" name="tipo" value="viatura">
-    Viatura
-</label>
-
+    <!-- DADOS DO VEÍCULO -->
     <div class="card hidden" id="secaoVeiculo">
-
-    <h2>Dados do Veículo</h2>
-
-    <label>Placa do Veículo</label>
-    <input type="text"
-       id="placaVeiculo"
-       maxlength="7"
-       placeholder="ABC1D23">
-
-    <label>Tipo do Veículo</label>
-
-    <select id="tipoVeiculo">
-        <option value="">Selecione...</option>
-
-        <option value="simples">
-            Caminhonete Simples
-        </option>
-
-        <option value="escada">
-            Caminhonete Escada Central
-        </option>
-
-        <option value="cesto">
-            Caminhão Cesto Aéreo
-        </option>
-
-        <option value="passeio">
-            Carro Passeio / Motocicleta
-        </option>
-
-    </select>
-
-</div>
-
-<div class="card hidden" id="checklistVeiculo">
-
-    <h2 id="tituloVeiculo"></h2>
-
-    <table>
-
-        <thead>
-
-            <tr>
-                <th>Item</th>
-                <th>Conforme</th>
-                <th>Não Conforme</th>
-                <th>Falta</th>
-                <th>Não se Aplica</th>
-            </tr>
-
-        </thead>
-
-        <tbody id="listaVeiculo">
-
-        </tbody>
-
-    </table>
-
-</div>
-
-</div>
-
-<div class="card hidden" id="secaoEPC">
-
-<h2>EQUIPAMENTOS DE PROTEÇÃO COLETIVA - EPC</h2>
-
-<table>
-
-<thead>
-<tr>
-    <th>Item</th>
-    <th>Conforme</th>
-    <th>Não Conforme</th>
-    <th>Falta</th>
-    <th>Não se Aplica</th>
-</tr>
-</thead>
-
-<tbody id="listaItens"></tbody>
-
-</table>
-
-</div>
-
-<br>
-
-<div class="btn-container">
-    <button type="button">
-        Salvar Inspeção
-    </button>
-</div>
-</div>
-<script>
-
-const itens = [
-'Bastão "Pega Tudo"',
-'Bastão Podador',
-'Vara de Manobra',
-'Bay-pass 13,8 kV',
-'Dispositivo Anti Queda',
-'Cone de Sinalização',
-'Aterramento BT',
-'Aterramento MT',
-'Detector de Tensão BT',
-'Detector de Tensão MT',
-'Dinamômetro',
-'Escada Extensível',
-'Escada Singela',
-'Manta Isolante',
-'Placa de Sinalização',
-'Fita de Transposição'
-];
-
-    const veiculos = {
-
-    simples: [
-
-        'Buzina',
-        'Chave de Roda',
-        'Luz de Ré',
-        'Luz de Freio',
-        'Setas',
-        'Farol',
-        'Pneu de Estepe',
-        'Freio de Mão',
-        'Limpador de Para-brisa',
-        'Esguicho',
-        'Macaco',
-        'Pneus',
-        'Retrovisores',
-        'Triângulo de Sinalização',
-        'Rádio VHF',
-        'Calços p/ Pneus'
-
-    ],
-
-    escada: [
-
-        'Buzina',
-        'Luz de Ré',
-        'Luz de Freio',
-        'Setas',
-        'Farol',
-        'Pneu de Estepe',
-        'Freio de Mão',
-        'Limpador de Para-brisa',
-        'Esguicho',
-        'Macaco',
-        'Pneus',
-        'Retrovisores',
-        'Triângulo de Sinalização',
-        'Rádio VHF',
-        'Condições da Escada Central',
-        'Mangueiras da Escada',
-        'Calços p/ Pneus',
-        'Calços p/ Patolas',
-        'Patolas'
-
-    ],
-
-    cesto: [
-
-        'Buzina',
-        'Luz de Ré',
-        'Luz de Freio',
-        'Setas',
-        'Farol',
-        'Pneu de Estepe',
-        'Freio de Mão',
-        'Limpador de Para-brisa',
-        'Esguicho',
-        'Macaco',
-        'Pneus',
-        'Retrovisores',
-        'Triângulo de Sinalização',
-        'Rádio VHF',
-        'Condições do Cesto',
-        'Mangueiras do Cesto',
-        'Lança do Cesto',
-        'Calços p/ Pneus',
-        'Calços p/ Patolas',
-        'Patolas'
-
-    ],
-
-    passeio: [
-
-        'Buzina',
-        'Luz de Ré',
-        'Luz de Freio',
-        'Setas',
-        'Farol',
-        'Freio de Mão',
-        'Limpador de Para-brisa',
-        'Esguicho',
-        'Pneus',
-        'Retrovisores',
-        'Triângulo de Sinalização'
-
-    ]
-
-};
-
-const tbody = document.getElementById("listaItens");
-
-itens.forEach((item, i)=>{
-
-    tbody.innerHTML += `
-    <tr>
-
-        <td>${i+1} - ${item}</td>
-
-        <td>
-            <input type="radio" name="item${i}" value="Conforme">
-        </td>
-
-        <td>
-            <input type="radio"
-                   name="item${i}"
-                   value="Não Conforme"
-                   onchange="mostrarNC(${i})">
-        </td>
-
-        <td>
-            <input type="radio" name="item${i}" value="Falta">
-        </td>
-
-        <td>
-            <input type="radio" name="item${i}" value="NA">
-        </td>
-
-    </tr>
-
-    <tr id="nc${i}" class="naoConformeBox">
-    <td colspan="5">
-
-        <div class="naoConformeContent">
-
-            <strong>Registro da Não Conformidade</strong>
-
-            <br><br>
-
-            Foto da não conformidade:
-
-            <br><br>
-
-            <input type="file"
-                   accept="image/*"
-                   capture="environment">
-
-            <br><br>
-
-            Observação:
-
-            <textarea
-    placeholder="Descreva a não conformidade..."
-></textarea>
-
-</div>
-
-</td>
-
-    </tr>
-    `;
-});
-
-function mostrarNC(indice){
-
-    const linha =
-        document.getElementById("nc"+indice);
-
-    linha.style.display = "table-row";
-
-}function ocultarNC(indice){
-
-    document.getElementById(
-        "nc"+indice
-    ).style.display = "none";
-
-}
-    function mostrarNCVeiculo(tipo,i){
-
-    document.getElementById(
-        `ncv${tipo}${i}`
-    ).style.display="table-row";
-
-}
-
-document.querySelectorAll('input[name="tipo"]')
-.forEach(radio=>{
-
-    radio.addEventListener("change",()=>{
-
-        if(radio.value==="epi" && radio.checked){
-
-            secaoEPC.classList.remove("hidden");
-
-            secaoVeiculo.classList.add("hidden");
-
-            checklistVeiculo.classList.add("hidden");
-
-        }
-
-        if(radio.value==="viatura" && radio.checked){
-
-            secaoVeiculo.classList.remove("hidden");
-
-            secaoEPC.classList.add("hidden");
-
-        }
-
-    });
-
-});
-    tipoVeiculo.addEventListener("change",()=>{
-
-    const tipo = tipoVeiculo.value;
-
-    if(!tipo){
-
-        checklistVeiculo.classList.add("hidden");
-
-        return;
-
-    }
-
-    checklistVeiculo.classList.remove("hidden");
-
-    tituloVeiculo.innerHTML =
-        tipoVeiculo.options[
-            tipoVeiculo.selectedIndex
-        ].text;
-
-    listaVeiculo.innerHTML="";
-
-    veiculos[tipo].forEach((item,i)=>{
-
-        listaVeiculo.innerHTML += `
-
-        <tr>
-
-            <td>${i+1} - ${item}</td>
-
-            <td>
-                <input type="radio"
-                       name="v${tipo}${i}">
-            </td>
-
-            <td>
-                <input type="radio"
-                       name="v${tipo}${i}"
-                       onchange="mostrarNCVeiculo('${tipo}',${i})">
-            </td>
-
-            <td>
-                <input type="radio"
-                       name="v${tipo}${i}">
-            </td>
-
-            <td>
-                <input type="radio"
-                       name="v${tipo}${i}">
-            </td>
-
-        </tr>
-
-        <tr id="ncv${tipo}${i}"
-            class="naoConformeBox">
-
-            <td colspan="5">
-
-                <strong>
-                    Registro da Não Conformidade
-                </strong>
-
-                <br><br>
-
-                Foto:
-
-                <br><br>
-
-                <input type="file"
-                       accept="image/*"
-                       capture="environment">
-
-                <br><br>
-
-                Observação:
-
-                <textarea></textarea>
-
-            </td>
-
-        </tr>
-
-        `;
-
-    });
-
-});
-
-</script>
-
-</body>
-</html>
+        <div class="card-title">Dados do Veículo</div>
+        <div class="card-body">
+            <div class="grid">
+                <div class="field">
+                    <label for="placaVeiculo">Placa do Veículo</label>
+                    <input
+                        type="text"
+                        id="placaVeiculo"
+                        maxlength="7"
+                        placeholder="ABC1D23"
+                    >
+                </div>
+
+                <div class="field">
+                    <label for="tipoVeiculo">Tipo do Veículo</label>
+                    <select id="tipoVeiculo">
+                        <option value="">Selecione...</option>
+                        <option value="simples">Caminhonete Simples</option>
+                        <option value="escada">Caminhonete Escada Central</option>
+                        <option value="cesto">Caminhão Cesto Aéreo</option>
+                        <option value="passeio">Carro Passeio / Motocicleta</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CHECKLIST VEÍCULO -->
+    <div class="card hidden" id="checklistVeiculo">
+        <div class="card-title" id="tituloVeiculo">Checklist do Veículo</div>
+        <div class="card-body">
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Conforme</th>
+                            <th>Não Conforme</th>
+                            <th>Falta</th>
+                            <th>Não se Aplica</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaVeiculo"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- CHECKLIST EPC -->
+    <div class="card hidden" id="secaoEPC">
+        <div class="card-title">Equipamentos de Proteção Coletiva - EPC</div>
+        <div class="card-body">
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Conforme</th>
+                            <th>Não Conforme</th>
+                            <th>Falta</th>
+                            <th>Não se Aplica</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaItens"></tbody>
