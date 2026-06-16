@@ -774,9 +774,8 @@ async function salvarInspecao() {
             body: JSON.stringify(payload)
         });
 
-        
         const j = await r.json().catch(() => ({}));
-        
+
         if (!r.ok) {
             console.error("Erro do Worker:", j);
             setStatus(
@@ -787,8 +786,35 @@ async function salvarInspecao() {
             return;
         }
 
+        // ✅ mensagem de sucesso
+        setStatus("Formulário enviado com sucesso!", "ok");
 
-        setStatus(j.message || "Inspeção salva com sucesso!", "ok");
+        // ✅ limpa os campos principais
+        document.getElementById("dataInspecao").value = "";
+        document.getElementById("resp1").value = "";
+        document.getElementById("mat1").value = "";
+        document.getElementById("resp2").value = "";
+        document.getElementById("mat2").value = "";
+        document.getElementById("matColab1").value = "";
+        document.getElementById("matColab2").value = "";
+        document.getElementById("placaVeiculo").value = "";
+        document.getElementById("tipoVeiculo").value = "";
+
+        // ✅ desmarca o tipo de inspeção
+        document.querySelectorAll('input[name="tipo"]').forEach(r => r.checked = false);
+
+        // ✅ esconde seções
+        secaoEPC.classList.add("hidden");
+        secaoVeiculo.classList.add("hidden");
+        checklistVeiculo.classList.add("hidden");
+        secaoColaboradores.classList.add("hidden");
+
+        // ✅ limpa checklist de veículo
+        listaVeiculo.innerHTML = "";
+
+        // ✅ recarrega checklist EPC limpo
+        carregarChecklistEPC();
+
     } catch (err) {
         console.error(err);
         setStatus("Falha ao conectar ao servidor.", "erro");
