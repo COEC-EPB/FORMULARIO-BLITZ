@@ -296,7 +296,143 @@
             padding:8px;
             font-size:12px;
         }
+    }/* ===== NOVO VISUAL DOS ITENS ===== */
+.checklist-mobile{
+    display:grid;
+    gap:18px;
+}
+
+.item-card{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:16px;
+    box-shadow:0 2px 8px rgba(0,0,0,.04);
+}
+
+.item-title{
+    font-size:18px;
+    font-weight:700;
+    margin-bottom:14px;
+    color:#222;
+    line-height:1.35;
+}
+
+.opcoes-grid{
+    display:grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap:12px;
+}
+
+.opcao-btn input[type=radio]{
+    display:none;
+}
+
+.opcao-btn label{
+    margin:0;
+    min-height:78px;
+    border:2px solid #d9d9d9;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:12px 10px;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    background:#fff;
+    transition:.2s ease;
+    line-height:1.25;
+}
+
+.opcao-btn label:hover{
+    border-color:var(--energisa-blue);
+    background:#f5fbfe;
+}
+
+.opcao-btn input[type=radio]:checked + label{
+    border-color:var(--energisa-blue);
+    background:#e6f7fd;
+    color:#005a7c;
+    box-shadow:0 0 0 3px rgba(0,151,206,.12);
+}
+
+.opcao-btn.conforme input[type=radio]:checked + label{
+    border-color:var(--energisa-green);
+    background:#ebfff3;
+    color:#006b31;
+}
+
+.opcao-btn.nao-conforme input[type=radio]:checked + label{
+    border-color:var(--danger);
+    background:#fff1f1;
+    color:#b42318;
+}
+
+.opcao-btn.falta input[type=radio]:checked + label{
+    border-color:#d97706;
+    background:#fff7ed;
+    color:#b45309;
+}
+
+.opcao-btn.na input[type=radio]:checked + label{
+    border-color:#6b7280;
+    background:#f3f4f6;
+    color:#374151;
+}
+
+.naoConformeBox{
+    display:none;
+    margin-top:12px;
+    background:#FFF5F5;
+    border-radius:12px;
+    overflow:hidden;
+    border:1px solid #fecaca;
+}
+
+.naoConformeContent{
+    padding:18px;
+    border-left:5px solid var(--danger);
+    text-align:left;
+}
+
+.naoConformeContent strong{
+    color:var(--danger);
+}
+
+/* esconder tabela antiga se quiser migrar totalmente */
+.checklist-tabela{
+    display:none;
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 900px){
+    .opcoes-grid{
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+}
+
+@media (max-width: 520px){
+    .item-card{
+        padding:14px;
+    }
+
+    .item-title{
+        font-size:16px;
+    }
+
+    .opcoes-grid{
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap:10px;
+    }
+
+    .opcao-btn label{
+        min-height:72px;
+        font-size:15px;
+        padding:10px 8px;
+    }
+}
 </style>
 </head>
 
@@ -420,55 +556,27 @@
         </div>
     </div>
 
-    <!-- CHECKLIST VEÍCULO -->
     <div class="card hidden" id="checklistVeiculo">
-        <div class="card-title" id="tituloVeiculo">
-            Checklist do Veículo
-        </div>
-
-        <div class="card-body">
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Item</th>
-                            <th>Conforme</th>
-                            <th>Não Conforme</th>
-                            <th>Falta</th>
-                            <th>Não se Aplica</th>
-                        </tr>
-                    </thead>
-
-                    <tbody id="listaVeiculo"></tbody>
-                </table>
-            </div>
-        </div>
+    <div class="card-title" id="tituloVeiculo">
+        Checklist do Veículo
     </div>
 
-    <!-- CHECKLIST EPC -->
-    <div class="card hidden" id="secaoEPC">
-        <div class="card-title">
-            EQUIPAMENTOS DE PROTEÇÃO COLETIVA - EPC
-        </div>
-
-        <div class="card-body">
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Item</th>
-                            <th>Conforme</th>
-                            <th>Não Conforme</th>
-                            <th>Falta</th>
-                            <th>Não se Aplica</th>
-                        </tr>
-                    </thead>
-
-                    <tbody id="listaItens"></tbody>
-                </table>
-            </div>
-        </div>
+    <div class="card-body">
+        <div id="listaVeiculo" class="checklist-mobile"></div>
     </div>
+</div>
+
+   <div class="card hidden" id="secaoEPC">
+    <div class="card-title">
+        EQUIPAMENTOS DE PROTEÇÃO COLETIVA - EPC
+    </div>
+
+    <div class="card-body">
+        <div id="listaItens" class="checklist-mobile"></div>
+    </div>
+</div>
+
+    
 
     <div class="btn-container">
         <button type="button" id="btnSalvar">
@@ -609,47 +717,71 @@ function toggleNC(idLinha, valor){
 
 function montarLinhaChecklist(nomeGrupo, item, indice, idNC, categoria){
     return `
-        <tr data-grupo="${nomeGrupo}" data-item="${item}" data-categoria="${categoria}">
-            <td>${indice + 1} - ${item}</td>
+        <div class="item-card" data-grupo="${nomeGrupo}" data-item="${item}" data-categoria="${categoria}">
+            <div class="item-title">${indice + 1} - ${item}</div>
 
-            <td>
-                <input type="radio" name="${nomeGrupo}" value="Conforme" onchange="toggleNC('${idNC}', this.value)">
-            </td>
+            <div class="opcoes-grid">
+                <div class="opcao-btn conforme">
+                    <input
+                        type="radio"
+                        id="${nomeGrupo}_conforme"
+                        name="${nomeGrupo}"
+                        value="Conforme"
+                        onchange="toggleNC('${idNC}', this.value)"
+                    >
+                    <label for="${nomeGrupo}_conforme">Conforme</label>
+                </div>
 
-            <td>
-                <input type="radio" name="${nomeGrupo}" value="Não Conforme" onchange="toggleNC('${idNC}', this.value)">
-            </td>
+                <div class="opcao-btn nao-conforme">
+                    <input
+                        type="radio"
+                        id="${nomeGrupo}_nao_conforme"
+                        name="${nomeGrupo}"
+                        value="Não Conforme"
+                        onchange="toggleNC('${idNC}', this.value)"
+                    >
+                    <label for="${nomeGrupo}_nao_conforme">Não Conforme</label>
+                </div>
 
-            <td>
-                <input type="radio" name="${nomeGrupo}" value="Falta" onchange="toggleNC('${idNC}', this.value)">
-            </td>
+                <div class="opcao-btn falta">
+                    <input
+                        type="radio"
+                        id="${nomeGrupo}_falta"
+                        name="${nomeGrupo}"
+                        value="Falta"
+                        onchange="toggleNC('${idNC}', this.value)"
+                    >
+                    <label for="${nomeGrupo}_falta">Falta</label>
+                </div>
 
-            <td>
-                <input type="radio" name="${nomeGrupo}" value="NA" onchange="toggleNC('${idNC}', this.value)">
-            </td>
-        </tr>
+                <div class="opcao-btn na">
+                    <input
+                        type="radio"
+                        id="${nomeGrupo}_na"
+                        name="${nomeGrupo}"
+                        value="NA"
+                        onchange="toggleNC('${idNC}', this.value)"
+                    >
+                    <label for="${nomeGrupo}_na">Não se Aplica</label>
+                </div>
+            </div>
 
-        <tr id="${idNC}" class="naoConformeBox">
-            <td colspan="5">
+            <div id="${idNC}" class="naoConformeBox">
                 <div class="naoConformeContent">
                     <strong>Registro da Não Conformidade</strong>
 
                     <br><br>
-
                     Foto da não conformidade:
-
                     <br><br>
 
                     <input type="file" class="fotoNC" accept="image/*" capture="environment">
 
                     <br><br>
-
                     Observação:
-
                     <textarea class="obsNC" placeholder="Descreva a não conformidade..."></textarea>
                 </div>
-            </td>
-        </tr>
+            </div>
+        </div>
     `;
 }
 
@@ -676,29 +808,23 @@ function getTipoInspecaoSelecionado() {
     return selecionado ? selecionado.value : "";
 }
 
-function coletarChecklistDoTbody(tbody) {
+function coletarChecklistDoContainer(container) {
     const registros = [];
-    const linhasPrincipais = tbody.querySelectorAll("tr[data-grupo]");
+    const cards = container.querySelectorAll(".item-card");
 
-    linhasPrincipais.forEach((tr) => {
-        const grupo = tr.dataset.grupo;
-        const item = tr.dataset.item;
-        const categoria = tr.dataset.categoria;
+    cards.forEach((card) => {
+        const grupo = card.dataset.grupo;
+        const item = card.dataset.item;
+        const categoria = card.dataset.categoria;
 
-        const selecionado = tr.querySelector(`input[name="${grupo}"]:checked`);
+        const selecionado = card.querySelector(`input[name="${grupo}"]:checked`);
         const status = selecionado ? selecionado.value : "";
 
-        const linhaNC = tr.nextElementSibling;
-        let observacao = "";
-        let foto_nome = "";
+        const obs = card.querySelector(".obsNC");
+        const foto = card.querySelector(".fotoNC");
 
-        if (linhaNC) {
-            const obs = linhaNC.querySelector(".obsNC");
-            const foto = linhaNC.querySelector(".fotoNC");
-
-            observacao = obs ? obs.value.trim() : "";
-            foto_nome = (foto && foto.files && foto.files[0]) ? foto.files[0].name : "";
-        }
+        const observacao = obs ? obs.value.trim() : "";
+        const foto_nome = (foto && foto.files && foto.files[0]) ? foto.files[0].name : "";
 
         registros.push({
             categoria,
@@ -712,6 +838,7 @@ function coletarChecklistDoTbody(tbody) {
 
     return registros;
 }
+
 
 function validarFormulario(payload) {
     if (!payload.data_inspecao) return "Informe a data da inspeção.";
@@ -738,11 +865,13 @@ async function salvarInspecao() {
         const tipo_inspecao = getTipoInspecaoSelecionado();
 
         let checklist = [];
+        
         if (tipo_inspecao === "epi") {
-            checklist = coletarChecklistDoTbody(listaItens);
+            checklist = coletarChecklistDoContainer(listaItens);
         } else if (tipo_inspecao === "viatura") {
-            checklist = coletarChecklistDoTbody(listaVeiculo);
+            checklist = coletarChecklistDoContainer(listaVeiculo);
         }
+
 
         const payload = {
             data_inspecao: document.getElementById("dataInspecao").value,
