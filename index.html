@@ -80,6 +80,12 @@
         border-radius:5px;
         cursor:pointer;
     }
+    select{
+    width:100%;
+    padding:10px;
+    margin-top:5px;
+    margin-bottom:15px;
+}
 </style>
 </head>
 
@@ -121,6 +127,65 @@
     <input type="radio" name="tipo" value="viatura">
     Viatura
 </label>
+
+    <div class="card hidden" id="secaoVeiculo">
+
+    <h2>Dados do Veículo</h2>
+
+    <label>Placa do Veículo</label>
+    <input type="text" id="placaVeiculo"
+           placeholder="ABC1D23">
+
+    <label>Tipo do Veículo</label>
+
+    <select id="tipoVeiculo">
+        <option value="">Selecione...</option>
+
+        <option value="simples">
+            Caminhonete Simples
+        </option>
+
+        <option value="escada">
+            Caminhonete Escada Central
+        </option>
+
+        <option value="cesto">
+            Caminhão Cesto Aéreo
+        </option>
+
+        <option value="passeio">
+            Carro Passeio / Motocicleta
+        </option>
+
+    </select>
+
+</div>
+
+<div class="card hidden" id="checklistVeiculo">
+
+    <h2 id="tituloVeiculo"></h2>
+
+    <table>
+
+        <thead>
+
+            <tr>
+                <th>Item</th>
+                <th>Conforme</th>
+                <th>Não Conforme</th>
+                <th>Falta</th>
+                <th>Não se Aplica</th>
+            </tr>
+
+        </thead>
+
+        <tbody id="listaVeiculo">
+
+        </tbody>
+
+    </table>
+
+</div>
 
 </div>
 
@@ -170,6 +235,96 @@ const itens = [
 'Placa de Sinalização',
 'Fita de Transposição'
 ];
+
+    const veiculos = {
+
+    simples: [
+
+        'Buzina',
+        'Chave de Roda',
+        'Luz de Ré',
+        'Luz de Freio',
+        'Setas',
+        'Farol',
+        'Pneu de Estepe',
+        'Freio de Mão',
+        'Limpador de Para-brisa',
+        'Esguicho',
+        'Macaco',
+        'Pneus',
+        'Retrovisores',
+        'Triângulo de Sinalização',
+        'Rádio VHF',
+        'Calços p/ Pneus'
+
+    ],
+
+    escada: [
+
+        'Buzina',
+        'Luz de Ré',
+        'Luz de Freio',
+        'Setas',
+        'Farol',
+        'Pneu de Estepe',
+        'Freio de Mão',
+        'Limpador de Para-brisa',
+        'Esguicho',
+        'Macaco',
+        'Pneus',
+        'Retrovisores',
+        'Triângulo de Sinalização',
+        'Rádio VHF',
+        'Condições da Escada Central',
+        'Mangueiras da Escada',
+        'Calços p/ Pneus',
+        'Calços p/ Patolas',
+        'Patolas'
+
+    ],
+
+    cesto: [
+
+        'Buzina',
+        'Luz de Ré',
+        'Luz de Freio',
+        'Setas',
+        'Farol',
+        'Pneu de Estepe',
+        'Freio de Mão',
+        'Limpador de Para-brisa',
+        'Esguicho',
+        'Macaco',
+        'Pneus',
+        'Retrovisores',
+        'Triângulo de Sinalização',
+        'Rádio VHF',
+        'Condições do Cesto',
+        'Mangueiras do Cesto',
+        'Lança do Cesto',
+        'Calços p/ Pneus',
+        'Calços p/ Patolas',
+        'Patolas'
+
+    ],
+
+    passeio: [
+
+        'Buzina',
+        'Luz de Ré',
+        'Luz de Freio',
+        'Setas',
+        'Farol',
+        'Freio de Mão',
+        'Limpador de Para-brisa',
+        'Esguicho',
+        'Pneus',
+        'Retrovisores',
+        'Triângulo de Sinalização'
+
+    ]
+
+};
 
 const tbody = document.getElementById("listaItens");
 
@@ -236,22 +391,122 @@ function mostrarNC(indice){
     document.getElementById("nc"+indice)
             .style.display = "table-row";
 }
+    function mostrarNCVeiculo(tipo,i){
+
+    document.getElementById(
+        `ncv${tipo}${i}`
+    ).style.display="table-row";
+
+}
 
 document.querySelectorAll('input[name="tipo"]')
-.forEach(radio => {
+.forEach(radio=>{
 
-    radio.addEventListener("change", ()=>{
+    radio.addEventListener("change",()=>{
 
-        if(radio.value === "epi" && radio.checked){
+        if(radio.value==="epi" && radio.checked){
 
-            document.getElementById("secaoEPC")
-                    .classList.remove("hidden");
+            secaoEPC.classList.remove("hidden");
 
-        }else if(radio.value === "viatura" && radio.checked){
+            secaoVeiculo.classList.add("hidden");
 
-            document.getElementById("secaoEPC")
-                    .classList.add("hidden");
+            checklistVeiculo.classList.add("hidden");
+
         }
+
+        if(radio.value==="viatura" && radio.checked){
+
+            secaoVeiculo.classList.remove("hidden");
+
+            secaoEPC.classList.add("hidden");
+
+        }
+
+    });
+
+});
+    tipoVeiculo.addEventListener("change",()=>{
+
+    const tipo = tipoVeiculo.value;
+
+    if(!tipo){
+
+        checklistVeiculo.classList.add("hidden");
+
+        return;
+
+    }
+
+    checklistVeiculo.classList.remove("hidden");
+
+    tituloVeiculo.innerHTML =
+        tipoVeiculo.options[
+            tipoVeiculo.selectedIndex
+        ].text;
+
+    listaVeiculo.innerHTML="";
+
+    veiculos[tipo].forEach((item,i)=>{
+
+        listaVeiculo.innerHTML += `
+
+        <tr>
+
+            <td>${i+1} - ${item}</td>
+
+            <td>
+                <input type="radio"
+                       name="v${tipo}${i}">
+            </td>
+
+            <td>
+                <input type="radio"
+                       name="v${tipo}${i}"
+                       onchange="mostrarNCVeiculo('${tipo}',${i})">
+            </td>
+
+            <td>
+                <input type="radio"
+                       name="v${tipo}${i}">
+            </td>
+
+            <td>
+                <input type="radio"
+                       name="v${tipo}${i}">
+            </td>
+
+        </tr>
+
+        <tr id="ncv${tipo}${i}"
+            class="naoConformeBox">
+
+            <td colspan="5">
+
+                <strong>
+                    Registro da Não Conformidade
+                </strong>
+
+                <br><br>
+
+                Foto:
+
+                <br><br>
+
+                <input type="file"
+                       accept="image/*"
+                       capture="environment">
+
+                <br><br>
+
+                Observação:
+
+                <textarea></textarea>
+
+            </td>
+
+        </tr>
+
+        `;
 
     });
 
