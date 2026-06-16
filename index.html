@@ -774,12 +774,19 @@ async function salvarInspecao() {
             body: JSON.stringify(payload)
         });
 
+        
         const j = await r.json().catch(() => ({}));
-
+        
         if (!r.ok) {
-            setStatus(j.error || "Erro ao salvar inspeção.", "erro");
+            console.error("Erro do Worker:", j);
+            setStatus(
+                (j.error || "Erro ao salvar inspeção.") +
+                (j.detail ? " | " + j.detail : ""),
+                "erro"
+            );
             return;
         }
+
 
         setStatus(j.message || "Inspeção salva com sucesso!", "ok");
     } catch (err) {
