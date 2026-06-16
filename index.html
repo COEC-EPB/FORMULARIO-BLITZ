@@ -7,22 +7,116 @@
 <title>Inspeção de Campo</title>
 
 <style>
+    :root{
+        --energisa-blue:#0097CE;
+        --energisa-blue-dark:#0079A8;
+        --energisa-green:#00843D;
+        --bg:#F3F5F7;
+        --border:#D9E0E6;
+        --text:#333;
+        --danger:#D32F2F;
+    }
+
+    *{
+        box-sizing:border-box;
+    }
+
     body{
-        font-family: Arial;
-        background:#f5f5f5;
-        margin:20px;
+        font-family:Arial, Helvetica, sans-serif;
+        background:var(--bg);
+        margin:0;
+        padding:20px;
+        color:var(--text);
+    }
+
+    .container{
+        max-width:1400px;
+        margin:auto;
+    }
+
+    .header{
+        background:linear-gradient(
+            90deg,
+            var(--energisa-blue),
+            var(--energisa-green)
+        );
+        color:white;
+        padding:20px 30px;
+        border-radius:12px;
+        margin-bottom:25px;
+        box-shadow:0 4px 15px rgba(0,0,0,.15);
+    }
+
+    .header h1{
+        margin:0;
+        font-size:28px;
+    }
+
+    .header span{
+        opacity:.9;
+        font-size:14px;
     }
 
     .card{
         background:white;
-        padding:20px;
-        border-radius:10px;
+        border-radius:12px;
         margin-bottom:20px;
-        box-shadow:0 0 10px rgba(0,0,0,.1);
+        overflow:hidden;
+        box-shadow:0 2px 10px rgba(0,0,0,.08);
     }
 
-    h2{
-        color:#0097CE;
+    .card-title{
+        background:var(--energisa-blue);
+        color:white;
+        padding:15px 20px;
+        font-size:18px;
+        font-weight:bold;
+    }
+
+    .card-body{
+        padding:20px;
+    }
+
+    label{
+        display:block;
+        font-weight:600;
+        margin-top:15px;
+        margin-bottom:6px;
+    }
+
+    input[type=text],
+    input[type=date],
+    select,
+    textarea{
+        width:100%;
+        padding:12px;
+        border:1px solid var(--border);
+        border-radius:8px;
+        font-size:14px;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus{
+        outline:none;
+        border-color:var(--energisa-blue);
+        box-shadow:0 0 0 3px rgba(0,151,206,.15);
+    }
+
+    .radio-group{
+        display:flex;
+        gap:40px;
+        flex-wrap:wrap;
+        margin-top:10px;
+    }
+
+    .radio-group label{
+        display:flex;
+        align-items:center;
+        gap:8px;
+        cursor:pointer;
+        font-weight:normal;
+        margin:0;
     }
 
     table{
@@ -31,71 +125,140 @@
     }
 
     th{
-        background:#f0f0f0;
-        padding:12px;
+        background:var(--energisa-blue);
+        color:white;
+        padding:14px;
+        text-align:center;
+        font-size:14px;
     }
 
     td{
-        padding:10px;
+        padding:12px;
+        border-bottom:1px solid #eee;
         text-align:center;
-        border-bottom:1px solid #ddd;
     }
 
     td:first-child{
         text-align:left;
     }
 
-    input[type=text],
-    input[type=date]{
-        width:100%;
-        padding:10px;
-        margin-top:5px;
-        margin-bottom:15px;
-        box-sizing:border-box;
+    tbody tr:nth-child(odd){
+        background:#FAFAFA;
     }
 
-    textarea{
-        width:100%;
-        height:80px;
-        padding:10px;
+    tbody tr:hover{
+        background:#F0F8FC;
+    }
+
+    input[type=radio]{
+        width:18px;
+        height:18px;
+        accent-color:var(--energisa-green);
+        cursor:pointer;
     }
 
     .naoConformeBox{
         display:none;
+        background:#FFF5F5 !important;
+    }
+
+    .naoConformeContent{
+        padding:20px;
+        border-left:5px solid var(--danger);
+        text-align:left;
+    }
+
+    .naoConformeContent strong{
+        color:var(--danger);
+    }
+
+    input[type=file]{
         margin-top:10px;
-        background:#fff4f4;
-        padding:15px;
-        border-left:5px solid red;
+    }
+
+    textarea{
+        min-height:90px;
+        margin-top:10px;
     }
 
     .hidden{
         display:none;
     }
 
+    .btn-container{
+        text-align:center;
+        margin-top:30px;
+    }
+
     button{
-        background:#0097CE;
+        background:var(--energisa-green);
         color:white;
         border:none;
-        padding:12px 25px;
-        border-radius:5px;
+        border-radius:10px;
+        padding:15px 40px;
+        font-size:16px;
+        font-weight:bold;
         cursor:pointer;
+        transition:.3s;
     }
-    select{
-    width:100%;
-    padding:10px;
-    margin-top:5px;
-    margin-bottom:15px;
-}
+
+    button:hover{
+        background:#006B31;
+        transform:translateY(-2px);
+        box-shadow:0 4px 12px rgba(0,0,0,.15);
+    }
+
+    .required{
+        color:red;
+    }
+
+    @media(max-width:768px){
+
+        body{
+            padding:10px;
+        }
+
+        .header h1{
+            font-size:22px;
+        }
+
+        table{
+            font-size:12px;
+        }
+
+        th,
+        td{
+            padding:8px;
+        }
+
+        .radio-group{
+            flex-direction:column;
+            gap:15px;
+        }
+
+        button{
+            width:100%;
+        }
+    }
 </style>
 </head>
 
 <body>
 
+<div class="container">
+
+    <div class="header">
+        <h1>Inspeção de Campo</h1>
+        <span>Checklist Operacional • Segurança • Veículos • EPI/EPC</span>
+    </div>
+
 <div class="card">
 
 <h2>Inspeção de Campo</h2>
 
-<label>Data da Inspeção</label>
+ <div class="card-title">
+        Dados da Inspeção
+    </div>
 <input type="date">
 
 <label>RESPONSÁVEL 01 PELA AÇÃO</label>
@@ -213,7 +376,11 @@
 
 <br>
 
-<button>Salvar Inspeção</button>
+<div class="btn-container">
+    <button type="button">
+        Salvar Inspeção
+    </button>
+</div>
 
 <script>
 
@@ -357,8 +524,9 @@ itens.forEach((item, i)=>{
     </tr>
 
     <tr id="nc${i}" class="naoConformeBox">
+    <td colspan="5">
 
-        <td colspan="5">
+        <div class="naoConformeContent">
 
             <strong>Registro da Não Conformidade</strong>
 
