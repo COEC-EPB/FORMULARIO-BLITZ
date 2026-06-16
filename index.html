@@ -460,7 +460,7 @@
 </div>
 
 <script>
-const API = "https://ensai-dieletrico.pedro-fillype.workers.dev";
+const API = "https://forms.pedro-fillype.workers.dev";
 
 const itens = [
     'Bastão "Pega Tudo"',
@@ -707,12 +707,6 @@ async function salvarInspecao() {
     setStatus("Salvando inspeção...", "info");
 
     try {
-        const token = localStorage.getItem("token");
-        if (!token) {
-            setStatus("Sessão não encontrada. Faça login antes de salvar.", "erro");
-            return;
-        }
-
         const tipo_inspecao = getTipoInspecaoSelecionado();
 
         let checklist = [];
@@ -743,8 +737,7 @@ async function salvarInspecao() {
         const r = await fetch(`${API}/salvar-form-inspecao`, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + token
+                "Content-Type": "application/json"
             },
             body: JSON.stringify(payload)
         });
@@ -764,6 +757,7 @@ async function salvarInspecao() {
         btnSalvar.disabled = false;
     }
 }
+
 
 document.querySelectorAll('input[name="tipo"]').forEach(radio => {
     radio.addEventListener("change", () => {
