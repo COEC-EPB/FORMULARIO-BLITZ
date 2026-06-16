@@ -365,6 +365,26 @@
             </div>
         </div>
     </div>
+    <!-- COLABORADORES INSPECIONADOS (EPI/EPC) -->
+<div class="card hidden" id="secaoColaboradores">
+    <div class="card-title">
+        Colaboradores Inspecionados
+    </div>
+
+    <div class="card-body">
+        <div class="grid">
+            <div>
+                <label for="matColab1">Matrícula do Colaborador 01 <span class="required">*</span></label>
+                <input type="text" id="matColab1" placeholder="Digite a matrícula do colaborador 01">
+            </div>
+
+            <div>
+                <label for="matColab2">Matrícula do Colaborador 02</label>
+                <input type="text" id="matColab2" placeholder="Digite a matrícula do colaborador 02">
+            </div>
+        </div>
+    </div>
+</div>
 
     <!-- DADOS DO VEÍCULO -->
     <div class="card hidden" id="secaoVeiculo">
@@ -571,6 +591,7 @@ const listaItens = document.getElementById("listaItens");
 const placaVeiculo = document.getElementById("placaVeiculo");
 const btnSalvar = document.getElementById("btnSalvar");
 const statusEl = document.getElementById("status");
+const secaoColaboradores = document.getElementById("secaoColaboradores");
 
 function setStatus(msg, tipo = "info"){
     statusEl.textContent = msg;
@@ -695,6 +716,10 @@ function validarFormulario(payload) {
     if (!payload.matricula_1) return "Informe a matrícula do Responsável 01.";
     if (!payload.tipo_inspecao) return "Selecione o tipo de inspeção.";
 
+    if (payload.tipo_inspecao === "epi" && !payload.matricula_colaborador_1) {
+        return "Informe a matrícula do colaborador 01 para inspeção EPI/EPC.";
+    }
+
     if (payload.tipo_inspecao === "viatura" && !payload.tipo_veiculo) {
         return "Selecione o tipo do veículo.";
     }
@@ -725,6 +750,9 @@ async function salvarInspecao() {
             tipo_inspecao,
             placa_veiculo: document.getElementById("placaVeiculo").value.trim(),
             tipo_veiculo: document.getElementById("tipoVeiculo").value,
+            matricula_colaborador_1: document.getElementById("matColab1").value.trim(),
+            matricula_colaborador_2: document.getElementById("matColab2").value.trim(),
+
             checklist
         };
 
@@ -763,15 +791,24 @@ document.querySelectorAll('input[name="tipo"]').forEach(radio => {
     radio.addEventListener("change", () => {
         if (radio.value === "epi" && radio.checked) {
             secaoEPC.classList.remove("hidden");
+            secaoColaboradores.classList.remove("hidden");
+
             secaoVeiculo.classList.add("hidden");
             checklistVeiculo.classList.add("hidden");
+
             tipoVeiculo.value = "";
             listaVeiculo.innerHTML = "";
+            document.getElementById("placaVeiculo").value = "";
         }
 
         if (radio.value === "viatura" && radio.checked) {
             secaoVeiculo.classList.remove("hidden");
+
             secaoEPC.classList.add("hidden");
+            secaoColaboradores.classList.add("hidden");
+
+            document.getElementById("matColab1").value = "";
+            document.getElementById("matColab2").value = "";
         }
     });
 });
