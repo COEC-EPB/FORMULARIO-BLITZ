@@ -819,10 +819,17 @@ function montarLinhaChecklist(nomeGrupo, item, indice, idNC, categoria){
     `;
 }
 
-function adicionarTituloGrupo(titulo) {
+function adicionarTituloGrupo(titulo, subtitulo = "") {
+    const classe = titulo === "EPI" ? "grupo-linha grupo-epi" : "grupo-linha grupo-epc";
+
     listaItens.innerHTML += `
-        <tr class="grupo-linha">
-            <td colspan="5">${titulo}</td>
+        <tr class="${classe}">
+            <td colspan="5">
+                <div class="grupo-wrap">
+                    <div class="grupo-titulo">${titulo}</div>
+                    ${subtitulo ? `<div class="grupo-subtitulo">${subtitulo}</div>` : ""}
+                </div>
+            </td>
         </tr>
     `;
 }
